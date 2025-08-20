@@ -61,7 +61,27 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Hotel Elite Custom Colors
+				wine: {
+					DEFAULT: 'hsl(var(--wine))',
+					light: 'hsl(var(--wine-light))',
+					dark: 'hsl(var(--wine-dark))'
+				},
+				gold: {
+					DEFAULT: 'hsl(var(--gold))',
+					light: 'hsl(var(--gold-light))',
+					dark: 'hsl(var(--gold-dark))'
+				},
+				cream: {
+					DEFAULT: 'hsl(var(--cream))',
+					light: 'hsl(var(--cream-light))'
+				},
+				'luxury-black': 'hsl(var(--luxury-black))'
+			},
+			fontFamily: {
+				playfair: ['Playfair Display', 'serif'],
+				poppins: ['Poppins', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +104,69 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				// Hotel Elite Custom Animations
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'fade-out': {
+					'0%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					},
+					'100%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					}
+				},
+				'scale-in': {
+					'0%': {
+						transform: 'scale(0.9)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
+				},
+				'slide-up': {
+					'0%': {
+						transform: 'translateY(30px)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'translateY(0)',
+						opacity: '1'
+					}
+				},
+				'luxury-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px hsl(var(--gold) / 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 40px hsl(var(--gold) / 0.8)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				// Hotel Elite Custom Animations
+				'fade-in': 'fade-in 0.6s ease-out',
+				'fade-out': 'fade-out 0.4s ease-out',
+				'scale-in': 'scale-in 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+				'slide-up': 'slide-up 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+				'luxury-glow': 'luxury-glow 3s ease-in-out infinite',
+				// Combined animations with delays
+				'fade-in-delayed': 'fade-in 0.6s ease-out 0.2s both',
+				'fade-in-slow': 'fade-in 0.8s ease-out both'
 			}
 		}
 	},
