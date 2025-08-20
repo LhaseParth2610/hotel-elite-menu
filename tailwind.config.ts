@@ -153,6 +153,24 @@ export default {
 					'50%': {
 						boxShadow: '0 0 40px hsl(var(--gold) / 0.8)'
 					}
+				},
+				'rotate-slow': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'pulse-glow': {
+					'0%, 100%': { 
+						transform: 'scale(1)',
+						boxShadow: '0 0 20px hsl(var(--wine) / 0.3)'
+					},
+					'50%': { 
+						transform: 'scale(1.05)',
+						boxShadow: '0 0 40px hsl(var(--wine) / 0.6)'
+					}
 				}
 			},
 			animation: {
@@ -164,6 +182,9 @@ export default {
 				'scale-in': 'scale-in 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
 				'slide-up': 'slide-up 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
 				'luxury-glow': 'luxury-glow 3s ease-in-out infinite',
+				'rotate-slow': 'rotate-slow 20s linear infinite',
+				'float': 'float 3s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
 				// Combined animations with delays
 				'fade-in-delayed': 'fade-in 0.6s ease-out 0.2s both',
 				'fade-in-slow': 'fade-in 0.8s ease-out both'

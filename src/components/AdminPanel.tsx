@@ -3,6 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Plus, Edit, Trash2, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AddDishModal } from "./admin/AddDishModal";
+import { EditDishModal } from "./admin/EditDishModal"; 
+import { ManageDishesModal } from "./admin/ManageDishesModal";
+
+interface FoodItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  spiceLevel: "mild" | "medium" | "spicy";
+  isVegetarian: boolean;
+  prepTime: number;
+  serves: number;
+  calories: number;
+  ingredients: string[];
+}
 
 interface AdminPanelProps {
   onLogout: () => void;
@@ -10,26 +27,58 @@ interface AdminPanelProps {
 
 export const AdminPanel = ({ onLogout }: AdminPanelProps) => {
   const { toast } = useToast();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showManageModal, setShowManageModal] = useState(false);
+  const [editingDish, setEditingDish] = useState<FoodItem | null>(null);
+
+  // Sample dishes data - in a real app this would be from a database
+  const [dishes, setDishes] = useState<Record<string, FoodItem[]>>({
+    "starters": [
+      {
+        id: "1",
+        name: "Paneer Tikka Masala",
+        price: 280,
+        image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        description: "Tender paneer cubes marinated in aromatic spices and grilled to perfection",
+        spiceLevel: "medium",
+        isVegetarian: true,
+        prepTime: 25,
+        serves: 2,
+        calories: 320,
+        ingredients: ["Paneer", "Yogurt", "Garam Masala", "Ginger-Garlic", "Bell Peppers"]
+      }
+    ],
+    "main-course": [
+      {
+        id: "3",
+        name: "Butter Chicken",
+        price: 480,
+        image: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        description: "Rich and creamy tomato-based curry with tender chicken pieces",
+        spiceLevel: "mild",
+        isVegetarian: false,
+        prepTime: 45,
+        serves: 3,
+        calories: 580,
+        ingredients: ["Chicken", "Tomatoes", "Cream", "Butter", "Cashews", "Garam Masala"]
+      }
+    ],
+    "desserts": [],
+    "beverages": [],
+    "chef-specials": []
+  });
 
   const handleAddDish = () => {
-    toast({
-      title: "Add New Dish",
-      description: "This feature will be implemented in the next version",
-    });
+    setShowAddModal(true);
   };
 
   const handleEditDish = () => {
-    toast({
-      title: "Edit Dish",
-      description: "This feature will be implemented in the next version",
-    });
+    setShowManageModal(true);
   };
 
   const handleDeleteDish = () => {
-    toast({
-      title: "Delete Dish",
-      description: "This feature will be implemented in the next version",
-    });
+    setShowManageModal(true);
   };
 
   const handleManageEvents = () => {
@@ -38,6 +87,44 @@ export const AdminPanel = ({ onLogout }: AdminPanelProps) => {
       description: "This feature will be implemented in the next version",
     });
   };
+
+  const handleSaveNewDish = (newDish: FoodItem) => {
+    // For now, add to starters category. In real app, use the category from the form
+    setDishes(prev => ({
+      ...prev,
+      starters: [...prev.starters, newDish]
+    }));
+  };
+
+  const handleEditDishClick = (dish: FoodItem) => {
+    setEditingDish(dish);
+    setShowEditModal(true);
+    setShowManageModal(false);
+  };
+
+  const handleUpdateDish = (updatedDish: FoodItem) => {
+    setDishes(prev => {
+      const newDishes = { ...prev };
+      Object.keys(newDishes).forEach(category => {
+        const dishIndex = newDishes[category].findIndex(d => d.id === updatedDish.id);
+        if (dishIndex !== -1) {
+          newDishes[category][dishIndex] = updatedDish;
+        }
+      });
+      return newDishes;
+    });
+    setEditingDish(null);
+  };
+
+  const handleDeleteDishConfirm = (dishId: string, category: string) => {
+    setDishes(prev => ({
+      ...prev,
+      [category]: prev[category].filter(dish => dish.id !== dishId)
+    }));
+  };
+
+  const totalDishes = Object.values(dishes).reduce((total, categoryDishes) => total + categoryDishes.length, 0);
+  const totalCategories = Object.keys(dishes).length;
 
   return (
     <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
@@ -98,9 +185,9 @@ export const AdminPanel = ({ onLogout }: AdminPanelProps) => {
             <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
               <Trash2 className="w-6 h-6 text-white" />
             </div>
-            <CardTitle className="font-playfair text-xl">Remove Dishes</CardTitle>
+            <CardTitle className="font-playfair text-xl">Manage Dishes</CardTitle>
             <CardDescription className="font-poppins">
-              Remove items that are no longer available
+              Edit or remove items from the menu
             </CardDescription>
           </CardHeader>
         </Card>
@@ -125,38 +212,49 @@ export const AdminPanel = ({ onLogout }: AdminPanelProps) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-gradient-card">
             <CardContent className="p-6 text-center">
-              <h3 className="font-playfair text-3xl font-bold text-wine mb-2">24</h3>
+              <h3 className="font-playfair text-3xl font-bold text-wine mb-2">{totalDishes}</h3>
               <p className="font-poppins text-muted-foreground">Total Menu Items</p>
             </CardContent>
           </Card>
           <Card className="bg-gradient-card">
             <CardContent className="p-6 text-center">
-              <h3 className="font-playfair text-3xl font-bold text-gold mb-2">5</h3>
+              <h3 className="font-playfair text-3xl font-bold text-gold mb-2">{totalCategories}</h3>
               <p className="font-poppins text-muted-foreground">Categories</p>
             </CardContent>
           </Card>
           <Card className="bg-gradient-card">
             <CardContent className="p-6 text-center">
-              <h3 className="font-playfair text-3xl font-bold text-wine mb-2">2</h3>
+              <h3 className="font-playfair text-3xl font-bold text-wine mb-2">0</h3>
               <p className="font-poppins text-muted-foreground">Active Events</p>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Coming Soon Notice */}
-      <div className="max-w-4xl mx-auto mt-16 text-center">
-        <div className="p-8 bg-cream/20 rounded-lg">
-          <h3 className="font-playfair text-2xl font-bold text-primary mb-4">
-            Full Admin Features Coming Soon
-          </h3>
-          <p className="font-poppins text-muted-foreground leading-relaxed">
-            This admin panel will include full CRUD operations for menu management, 
-            photo uploads, special event scheduling, and analytics. Currently showing 
-            the basic structure and navigation.
-          </p>
-        </div>
-      </div>
+      {/* Modals */}
+      <AddDishModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSave={handleSaveNewDish}
+      />
+
+      <EditDishModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingDish(null);
+        }}
+        onSave={handleUpdateDish}
+        dish={editingDish}
+      />
+
+      <ManageDishesModal
+        isOpen={showManageModal}
+        onClose={() => setShowManageModal(false)}
+        dishes={dishes}
+        onEdit={handleEditDishClick}
+        onDelete={handleDeleteDishConfirm}
+      />
     </div>
   );
 };

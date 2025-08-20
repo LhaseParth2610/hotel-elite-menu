@@ -1,116 +1,154 @@
 import { Card } from "@/components/ui/card";
-import { ChefHat, Utensils, Coffee, Wine, Star } from "lucide-react";
+import { Star, Sparkles, ArrowRight } from "lucide-react";
 
 interface MenuCategoriesProps {
   onCategorySelect: (category: string) => void;
 }
 
-const categories = [
+const favoriteMenuItems = [
   {
     id: "starters",
-    name: "Starters",
-    icon: ChefHat,
-    description: "Exquisite appetizers to begin your culinary journey",
-    gradient: "from-wine to-wine-light",
+    name: "Exquisite Starters",
+    description: "Appetizers to awaken your palate",
   },
   {
-    id: "main-course",
-    name: "Main Course",
-    icon: Utensils,
-    description: "Signature dishes crafted with premium ingredients",
-    gradient: "from-gold to-gold-light",
+    id: "main-course", 
+    name: "Signature Main Courses",
+    description: "Premium dishes crafted with passion",
   },
   {
     id: "desserts",
-    name: "Desserts",
-    icon: Star,
-    description: "Decadent sweet creations to end on a perfect note",
-    gradient: "from-cream to-cream-light",
+    name: "Divine Desserts", 
+    description: "Sweet endings to perfection",
   },
   {
     id: "beverages",
-    name: "Beverages",
-    icon: Coffee,
-    description: "Refreshing drinks and premium coffee selections",
-    gradient: "from-wine-light to-gold",
+    name: "Premium Beverages",
+    description: "Carefully curated drink selections",
   },
   {
     id: "chef-specials",
-    name: "Chef's Specials",
-    icon: Wine,
+    name: "Chef's Masterpieces",
     description: "Seasonal specialties and signature creations",
-    gradient: "from-luxury-black to-wine-dark",
   },
+];
+
+const stackedImages = [
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+  "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", 
+  "https://images.unsplash.com/photo-1563379091339-03246963d96c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+  "https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+  "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
 ];
 
 export const MenuCategories = ({ onCategorySelect }: MenuCategoriesProps) => {
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto text-center mb-16">
-        <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-6">
-          Our Menu
-        </h1>
-        <div className="w-24 h-1 bg-gold mx-auto mb-6"></div>
-        <p className="text-lg sm:text-xl text-muted-foreground font-poppins font-light max-w-2xl mx-auto">
-          Discover our carefully curated selection of dishes, each prepared with passion and premium ingredients
-        </p>
-      </div>
-
-      {/* Categories Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        {categories.map((category, index) => {
-          const IconComponent = category.icon;
+    <div className="min-h-screen bg-gradient-to-br from-wine via-wine-dark to-luxury-black">
+      <div className="container mx-auto px-4 py-8 lg:py-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center min-h-[80vh]">
           
-          return (
-            <Card
-              key={category.id}
-              className={`relative overflow-hidden cursor-pointer hover-lift transition-luxury group animate-fade-in shadow-card`}
-              style={{ animationDelay: `${index * 100}ms` }}
-              onClick={() => onCategorySelect(category.id)}
-            >
-              {/* Background Gradient */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-10 group-hover:opacity-20 transition-luxury`}></div>
-              
-              <div className="relative p-8 text-center">
-                {/* Icon */}
-                <div className="mb-6">
-                  <div className="w-16 h-16 mx-auto bg-gradient-to-br from-wine to-gold rounded-full flex items-center justify-center shadow-luxury group-hover:scale-110 transition-luxury">
-                    <IconComponent className="w-8 h-8 text-white" />
+          {/* Left Side - Menu Content */}
+          <div className="space-y-8 lg:space-y-12 text-white order-2 lg:order-1">
+            
+            {/* Decorative Stars */}
+            <div className="flex items-center space-x-2 mb-6">
+              <Sparkles className="w-6 h-6 text-gold animate-pulse-glow" />
+              <div className="w-16 h-0.5 bg-gold"></div>
+              <Sparkles className="w-6 h-6 text-gold animate-pulse-glow" />
+            </div>
+
+            {/* Main Title */}
+            <div className="space-y-4">
+              <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
+                OUR
+                <br />
+                <span className="text-gradient-gold">FAVORITE</span>
+                <br />
+                MENU
+              </h1>
+            </div>
+
+            {/* Menu Items List */}
+            <div className="space-y-6 lg:space-y-8">
+              {favoriteMenuItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="group cursor-pointer transition-luxury hover:translate-x-4"
+                  onClick={() => onCategorySelect(item.id)}
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <div className="flex items-center space-x-4 lg:space-x-6">
+                    {/* Star Icon */}
+                    <div className="flex-shrink-0">
+                      <Star className="w-5 h-5 lg:w-6 lg:h-6 text-gold fill-gold group-hover:animate-pulse-glow" />
+                    </div>
+                    
+                    {/* Menu Item Content */}
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-playfair text-xl lg:text-2xl xl:text-3xl font-bold group-hover:text-gold transition-smooth">
+                            {item.name}
+                          </h3>
+                          <p className="text-cream text-sm lg:text-base opacity-80 group-hover:opacity-100 transition-smooth">
+                            {item.description}
+                          </p>
+                        </div>
+                        
+                        {/* Arrow */}
+                        <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-gold opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-luxury" />
+                      </div>
+                      
+                      {/* Decorative Line */}
+                      <div className="mt-3 w-0 h-0.5 bg-gold group-hover:w-20 transition-luxury duration-500"></div>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Category Name */}
-                <h3 className="font-playfair text-2xl sm:text-3xl font-bold text-primary mb-4 group-hover:text-wine transition-smooth">
-                  {category.name}
-                </h3>
+            {/* Bottom Tagline */}
+            <div className="pt-8 lg:pt-12">
+              <p className="text-cream/70 font-poppins text-sm lg:text-base italic">
+                "Experience culinary excellence at Hotel Elite Nashik"
+              </p>
+            </div>
+          </div>
 
-                {/* Description */}
-                <p className="text-muted-foreground font-poppins text-sm sm:text-base leading-relaxed">
-                  {category.description}
-                </p>
-
-                {/* Decorative Line */}
-                <div className="mt-6 w-12 h-0.5 bg-gold mx-auto group-hover:w-16 transition-luxury"></div>
-              </div>
-
-              {/* Hover Effect Border */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold rounded-lg transition-luxury"></div>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Decorative Bottom Section */}
-      <div className="max-w-6xl mx-auto mt-20 text-center">
-        <div className="flex justify-center space-x-4 opacity-50">
-          <div className="w-16 h-0.5 bg-wine"></div>
-          <div className="w-2 h-2 bg-gold rounded-full"></div>
-          <div className="w-16 h-0.5 bg-wine"></div>
+          {/* Right Side - Stacked Food Images */}
+          <div className="relative order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div className="relative w-80 h-80 lg:w-96 lg:h-96">
+              {stackedImages.map((image, index) => (
+                <div
+                  key={index}
+                  className="absolute w-full h-full"
+                  style={{
+                    transform: `rotate(${index * 8}deg) scale(${1 - index * 0.05})`,
+                    zIndex: stackedImages.length - index,
+                    transformOrigin: 'center bottom',
+                  }}
+                >
+                  <Card className="w-full h-full overflow-hidden shadow-luxury animate-float" 
+                        style={{ animationDelay: `${index * 0.5}s` }}>
+                    <img
+                      src={image}
+                      alt={`Delicious dish ${index + 1}`}
+                      className="w-full h-full object-cover hover:scale-110 transition-luxury"
+                    />
+                  </Card>
+                </div>
+              ))}
+              
+              {/* Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-wine/20 rounded-full blur-3xl animate-luxury-glow -z-10"></div>
+            </div>
+            
+            {/* Floating Decorative Elements */}
+            <div className="absolute -top-8 -right-8 w-4 h-4 bg-gold rounded-full animate-float"></div>
+            <div className="absolute -bottom-12 -left-8 w-6 h-6 bg-wine-light rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-1/2 -right-16 w-3 h-3 bg-cream rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+          </div>
         </div>
-        <p className="mt-6 text-muted-foreground font-poppins text-sm">
-          All dishes are prepared fresh to order
-        </p>
       </div>
     </div>
   );
